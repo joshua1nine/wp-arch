@@ -71,7 +71,7 @@ class UtilsHandler
 		{
 			string targetFilePath = Path.Combine(destinationDir, file.Name);
 			FileInfo newfi = file.CopyTo(targetFilePath);
-			// Console.WriteLine(newfi.FullName);
+			Console.WriteLine(newfi.FullName);
 		}
 
 		// If recursive and copying subdirectories, recursively call this method
@@ -84,57 +84,5 @@ class UtilsHandler
 			}
 		}
 	}
-	public static async Task CopyDirectoryAsync(string sourceDir, string destinationDir, bool recursive)
-	{
-		// Get information about the source directory
-		var dir = new DirectoryInfo(sourceDir);
 
-		// Check if the source directory exists
-		if (!dir.Exists)
-			throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
-
-		// Cache directories before we start copying
-		DirectoryInfo[] dirs = dir.GetDirectories();
-
-		// Create the destination directory
-		Directory.CreateDirectory(destinationDir);
-
-		string[] files = Directory.GetFileSystemEntries(sourceDir, "*", SearchOption.AllDirectories);
-		Console.WriteLine(files.Length);
-
-		// Get the files in the source directory and copy to the destination directory
-		int totalTicks = files.Length;
-		var options = new ProgressBarOptions
-		{
-			ProgressCharacter = '─',
-			ProgressBarOnBottom = true
-		};
-		using (var pbar = new ProgressBar(totalTicks, "Copying wp-contents", options))
-		{
-			foreach (FileInfo file in dir.GetFiles())
-			{
-				string targetFilePath = Path.Combine(destinationDir, file.Name);
-				FileInfo newfi = await Task.Run(() => file.CopyTo(targetFilePath));
-				pbar.Tick(); //will advance pbar to 1 out of 10.
-			}
-
-		}
-
-		// foreach (FileInfo file in dir.GetFiles())
-		// {
-		// 	string targetFilePath = Path.Combine(destinationDir, file.Name);
-		// 	FileInfo newfi = await Task.Run(() => file.CopyTo(targetFilePath));
-		// 	Console.WriteLine(newfi.FullName);
-		// }
-
-		// If recursive and copying subdirectories, recursively call this method
-		if (recursive)
-		{
-			foreach (DirectoryInfo subDir in dirs)
-			{
-				string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
-				CopyDirectory(subDir.FullName, newDestinationDir, true);
-			}
-		}
-	}
 }

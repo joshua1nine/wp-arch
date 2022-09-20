@@ -5,7 +5,7 @@ namespace ConsoleUI
 {
 	class Program
 	{
-		public static async Task Main(string[] args)
+		public static void Main(string[] args)
 		{
 			// Add try catch
 			try
@@ -74,7 +74,7 @@ namespace ConsoleUI
 
 					// Copy wp-content folder into temp folder.
 					// await UtilsHandler.CopyDirectoryAsync($"{rootDir}/wp-content", $"{tempDir}/wp-content", true);
-					await UtilsHandler.CopyDirectoryAsync($"{rootDir}/wp-content", $"{tempDir}/wp-content", true);
+					UtilsHandler.CopyDirectory($"{rootDir}/wp-content", $"{tempDir}/wp-content", true);
 
 					// Delete MySqlDefaults.ini file
 					if (File.Exists($"{tempDir}/MySqlDefaults.ini"))
