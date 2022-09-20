@@ -1,10 +1,11 @@
 ﻿using System.IO.Compression;
+using ShellProgressBar;
 
 namespace ConsoleUI
 {
 	class Program
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			// Add try catch
 			try
@@ -67,8 +68,13 @@ namespace ConsoleUI
 					// Export the database in to temp folder.
 					UtilsHandler.BackupDatabase($"{tempDir}/MySqlDefaults.ini", dbInfo.DBName, $"{tempDir}/{dbInfo.DBName}_backup.sql");
 
+					// string[] files = Directory.GetFileSystemEntries($"{rootDir}/wp-content", "*", SearchOption.AllDirectories);
+					// Console.WriteLine(String.Join(Environment.NewLine, files));
+					// Console.WriteLine(files.Length);
+
 					// Copy wp-content folder into temp folder.
-					UtilsHandler.CopyDirectory($"{rootDir}/wp-content", $"{tempDir}/wp-content", true);
+					// await UtilsHandler.CopyDirectoryAsync($"{rootDir}/wp-content", $"{tempDir}/wp-content", true);
+					await UtilsHandler.CopyDirectoryAsync($"{rootDir}/wp-content", $"{tempDir}/wp-content", true);
 
 					// Delete MySqlDefaults.ini file
 					if (File.Exists($"{tempDir}/MySqlDefaults.ini"))
