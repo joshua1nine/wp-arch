@@ -93,6 +93,10 @@ namespace ConsoleUI
 							}
 							else if (overwrite == "n")
 							{
+								if (Directory.Exists(tempDir))
+								{
+									Directory.Delete(tempDir, true);
+								}
 								Environment.Exit(1);
 							}
 						}
