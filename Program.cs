@@ -11,42 +11,26 @@ namespace ConsoleUI
 			try
 			{
 				// Define Variables
-				string? archiveName;
-				string? rootDir;
-				string? outDir;
-				string? tempDir;
+				string rootDir;
+				string outDir;
+				string tempDir;
 
 				// Set User Args
 				switch (args.Length)
 				{
 					case 1:
-						archiveName = args[0];
-						Console.Write("Directory to be archived:");
-						rootDir = Console.ReadLine();
-						Console.Write("Destination directory:");
-						outDir = Console.ReadLine();
+						rootDir = args[0];
+						outDir = rootDir;
 						tempDir = $"{rootDir}/wpa-temp";
 						break;
 					case 2:
-						archiveName = args[0];
-						rootDir = args[1];
-						Console.Write("Destination directory:");
-						outDir = Console.ReadLine();
-						tempDir = $"{rootDir}/wpa-temp";
-						break;
-					case 3:
-						archiveName = args[0];
-						rootDir = args[1];
-						outDir = args[2];
+						rootDir = args[0];
+						outDir = args[1];
 						tempDir = $"{rootDir}/wpa-temp";
 						break;
 					default:
-						Console.Write("Archive name:");
-						archiveName = Console.ReadLine();
-						Console.Write("Directory to be archived:");
-						rootDir = Console.ReadLine();
-						Console.Write("Destination directory:");
-						outDir = Console.ReadLine();
+						rootDir = ".";
+						outDir = rootDir;
 						tempDir = $"{rootDir}/wpa-temp";
 						break;
 				}
@@ -98,14 +82,14 @@ namespace ConsoleUI
 						}
 
 						// Zip temp folder and place it in the users chosen directory location.
-						if (File.Exists($"{outDir}/{archiveName}_archive.zip"))
+						if (File.Exists($"{outDir}/{dbInfo.DBName}_archive.zip"))
 						{
-							Console.Write($"{outDir}/{archiveName}_archive.zip already exists. Would you like to overwrite? [y/n]: ");
+							Console.Write($"{outDir}/{dbInfo.DBName}_archive.zip already exists. Would you like to overwrite? [y/n]: ");
 							string? overwrite = Console.ReadLine();
 							if (overwrite == "y")
 							{
-								File.Delete($"{outDir}/{archiveName}_archive.zip");
-								ZipFile.CreateFromDirectory(tempDir, $"{outDir}/{archiveName}_archive.zip");
+								File.Delete($"{outDir}/{dbInfo.DBName}_archive.zip");
+								ZipFile.CreateFromDirectory(tempDir, $"{outDir}/{dbInfo.DBName}_archive.zip");
 							}
 							else if (overwrite == "n")
 							{
@@ -114,7 +98,7 @@ namespace ConsoleUI
 						}
 						else
 						{
-							ZipFile.CreateFromDirectory(tempDir, $"{outDir}/{archiveName}_archive.zip");
+							ZipFile.CreateFromDirectory(tempDir, $"{outDir}/{dbInfo.DBName}_archive.zip");
 						}
 
 						// Remove temp folder
